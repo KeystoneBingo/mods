@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food POS Modifier Cheat Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f6f2;
+    --surface: #ffffff;
+    --border: rgba(0,0,0,0.1);
+    --border-mid: rgba(0,0,0,0.18);
+    --text-primary: #1a1a18;
+    --text-secondary: #5a5a56;
+    --text-tertiary: #9a9a94;
+    --radius-md: 8px;
+    --radius-lg: 14px;
+    --font: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  header {
+    max-width: 1200px;
+    margin: 0 auto 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 0.5px solid var(--border-mid);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  header p {
+    font-size: 14px;
+    color: var(--text-tertiary);
+    margin-top: 4px;
+  }
+
+  .filter-bar {
+    max-width: 1200px;
+    margin: 0 auto 1.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filter-btn {
+    font-family: var(--font);
+    font-size: 13px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 0.5px solid var(--border-mid);
+    background: var(--surface);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-weight: 400;
+  }
+
+  .filter-btn:hover {
+    border-color: rgba(0,0,0,0.3);
+    color: var(--text-primary);
+  }
+
+  .filter-btn.active {
+    background: var(--text-primary);
+    color: #fff;
+    border-color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem 1.25rem;
+    transition: opacity 0.2s;
+  }
+
+  .card.hidden { display: none; }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  .card-tag {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 10px;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  .screen { margin-bottom: 10px; }
+
+  .screen-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-tertiary);
+    margin-bottom: 6px;
+  }
+
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .pill {
+    font-size: 12px;
+    padding: 3px 9px;
+    border-radius: 10px;
+    border: 0.5px solid var(--border);
+    color: var(--text-secondary);
+    background: #fafaf8;
+    line-height: 1.4;
+  }
+
+  .pill.note {
+    font-style: italic;
+    color: var(--text-tertiary);
+    background: none;
+    border-color: transparent;
+    padding-left: 0;
+  }
+
+  .divider {
+    border: none;
+    border-top: 0.5px solid var(--border);
+    margin: 10px 0;
+  }
+
+  .count-bar {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    max-width: 1200px;
+    margin: 0 auto 1rem;
+    font-family: var(--font-mono);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Food POS — Modifier Cheat Sheet</h1>
+    <p>Reference guide for building modifier screens by menu category</p>
+  </div>
+</header>
+
+<div class="filter-bar" id="filters"></div>
+<div class="count-bar" id="countBar"></div>
+<div class="grid" id="grid"></div>
+
+<script>
+const categories = [
+  {
+    id: "burgers", label: "Burgers", tag: "Entrée",
+    tagColor: "#3B6D11", tagBg: "#EAF3DE",
+    screens: [
+      { label: "Screen 1 — protein / patty", items: ["Single patty","Double patty","Triple patty","Veggie patty","Turkey patty","Chicken breast","Chicken tender"] },
+      { label: "Screen 2 — bun / bread", items: ["Brioche bun","Kaiser roll","Sesame bun","Pretzel bun","Lettuce wrap","No bun","Gluten-free bun"] },
+      { label: "Screen 3 — cheese", items: ["American","Cheddar","Swiss","Pepper jack","Provolone","Bleu cheese crumbles","No cheese"] },
+      { label: "Screen 4 — toppings / produce", items: ["Lettuce","Tomato","Onion","Red onion","Grilled onions","Jalapeños","Pickles","Banana peppers","Mushrooms","Bacon","Avocado / guac","Fried egg","No tomato","No lettuce","No onion","No pickles"] },
+      { label: "Screen 5 — sauce / prep", items: ["Mayo","Mustard","Ketchup","BBQ sauce","Ranch","Hot sauce","Sriracha","Chipotle mayo","Garlic aioli","Dry (no sauce)","Well done","Medium","On the side","Extra sauce"] },
+    ]
+  },
+  {
+    id: "sandwiches", label: "Sandwiches / Subs", tag: "Entrée",
+    tagColor: "#3B6D11", tagBg: "#EAF3DE",
+    screens: [
+      { label: "Screen 1 — protein", items: ["Turkey","Ham","Roast beef","Tuna salad","Chicken salad","BLT","Veggie","Italian combo","Meatball"] },
+      { label: "Screen 2 — bread", items: ["White","Wheat","Hoagie roll","Sub roll","Ciabatta","Wrap / tortilla","Sourdough","Rye","Gluten-free"] },
+      { label: "Screen 3 — cheese", items: ["American","Provolone","Swiss","Cheddar","Pepper jack","Mozzarella","No cheese"] },
+      { label: "Screen 4 — toppings", items: ["Lettuce","Tomato","Onion","Red onion","Banana peppers","Jalapeños","Pickles","Olives","Roasted peppers","Cucumbers","Hot peppers","Avocado"] },
+      { label: "Screen 5 — sauce / temp", items: ["Mayo","Mustard","Yellow mustard","Honey mustard","Oil & vinegar","Ranch","Italian dressing","Hot sauce","Chipotle mayo","Dry","Toasted","Hot","Cold"] },
+    ]
+  },
+  {
+    id: "wings", label: "Wings", tag: "App / Entrée",
+    tagColor: "#633806", tagBg: "#FAEEDA",
+    screens: [
+      { label: "Screen 1 — style", items: ["Bone-in traditional","Boneless","Naked (no breading)","Breaded","Crispy","Extra crispy"] },
+      { label: "Screen 2 — quantity / size", items: ["6 pc","10 pc","12 pc","18 pc","20 pc","Party tray"] },
+      { label: "Screen 3 — sauce / flavor", items: ["Buffalo mild","Buffalo medium","Buffalo hot","Buffalo extra hot","BBQ","Honey BBQ","Honey garlic","Teriyaki","Lemon pepper (dry)","Garlic parmesan","Mango habanero","Old Bay (dry)","Dry rub only","Sauce on side","Extra sauce"] },
+      { label: "Screen 4 — dipping sauce", items: ["Ranch","Bleu cheese","Both","No dipping sauce"] },
+      { label: "Screen 5 — sides / extras", items: ["Celery","Carrots","Celery & carrots","Extra celery","No celery","Extra bleu cheese","Extra ranch"] },
+    ]
+  },
+  {
+    id: "pizza", label: "Pizza", tag: "Entrée",
+    tagColor: "#993C1D", tagBg: "#FAECE7",
+    screens: [
+      { label: "Screen 1 — size / crust", items: ["Small (10\")","Medium (12\")","Large (14\")","XL (16\")","Thin crust","Hand tossed","Thick / pan","Cauliflower crust","Gluten-free crust","Well done","Light bake"] },
+      { label: "Screen 2 — sauce", items: ["Marinara","Extra sauce","Light sauce","No sauce","White garlic sauce","BBQ sauce","Buffalo sauce","Olive oil & garlic","Pesto"] },
+      { label: "Screen 3 — cheese", items: ["Mozzarella","Extra cheese","Light cheese","No cheese","Cheddar blend","Ricotta (dollops)","Parmesan","Bleu cheese crumbles","Vegan cheese"] },
+      { label: "Screen 4 — meat toppings", items: ["Pepperoni","Sausage","Bacon","Ham","Chicken","Meatball (sliced)","Anchovies","Prosciutto","Salami"] },
+      { label: "Screen 5 — veggie toppings / half", items: ["Mushrooms","Onions","Green peppers","Black olives","Banana peppers","Jalapeños","Roasted red peppers","Spinach","Sun-dried tomato","Pineapple","Basil (fresh)","Garlic","Left half only","Right half only","Extra on half"] },
+    ]
+  },
+  {
+    id: "salads", label: "Salads", tag: "Entrée / Side",
+    tagColor: "#0C447C", tagBg: "#E6F1FB",
+    screens: [
+      { label: "Screen 1 — base greens", items: ["Iceberg","Romaine","Mixed greens","Spinach","Caesar base","No lettuce (toppings only)"] },
+      { label: "Screen 2 — protein add-on", items: ["Grilled chicken","Crispy chicken","Shrimp","Steak strips","Salmon","Tuna","Chicken salad scoop","Hard boiled egg","No protein"] },
+      { label: "Screen 3 — cheese", items: ["Cheddar","Bleu cheese crumbles","Parmesan","Feta","Swiss","No cheese"] },
+      { label: "Screen 4 — toppings / extras", items: ["Tomato","Red onion","Cucumber","Croutons","Bacon bits","Sunflower seeds","Avocado","Chickpeas","Wonton strips","Olives","No croutons","Extra toppings"] },
+      { label: "Screen 5 — dressing", items: ["Ranch","Bleu cheese","Italian","Balsamic vinaigrette","Caesar","Honey mustard","Thousand island","French","Oil & vinegar","On the side","Extra dressing","No dressing"] },
+    ]
+  },
+  {
+    id: "apps", label: "Appetizers", tag: "Starter",
+    tagColor: "#533AB7", tagBg: "#EEEDFE",
+    screens: [
+      { label: "Screen 1 — item specifics", items: ["Mozzarella sticks","Onion rings","Loaded fries","Cheese curds","Jalapeño poppers","Potato skins","Spinach artichoke dip","Soft pretzel","Nachos","Chips & salsa","Quesadilla"] },
+      { label: "Screen 2 — size / quantity", items: ["Half order","Full order","Basket","Platter","Party size"] },
+      { label: "Screen 3 — add-ons / toppings", items: ["Extra cheese","Bacon","Jalapeños","Sour cream","Guacamole","Pico de gallo","Chili","Green onions","Olives (nachos)","Ground beef (nachos)","Chicken (nachos / quesadilla)"] },
+      { label: "Screen 4 — dipping sauce", items: ["Marinara","Ranch","Bleu cheese","Honey mustard","BBQ","Hot sauce","Queso","Sriracha","No sauce","Sauce on side","Extra sauce"] },
+      { label: "Screen 5 — prep / notes", items: ["Well done / extra crispy","Light cook","No salt","Gluten-free if available","Allergy note"] },
+    ]
+  },
+  {
+    id: "wraps", label: "Wraps / Quesadillas", tag: "Entrée",
+    tagColor: "#3B6D11", tagBg: "#EAF3DE",
+    screens: [
+      { label: "Screen 1 — protein", items: ["Grilled chicken","Crispy chicken","Steak","Shrimp","Turkey","Veggie","Buffalo chicken","BBQ chicken"] },
+      { label: "Screen 2 — wrap / tortilla type", items: ["Flour tortilla","Wheat tortilla","Spinach tortilla","Sun-dried tomato tortilla","Gluten-free wrap","Toasted","Not toasted"] },
+      { label: "Screen 3 — cheese", items: ["Cheddar","Pepper jack","Mozzarella","American","Swiss","No cheese"] },
+      { label: "Screen 4 — toppings", items: ["Lettuce","Tomato","Onion","Banana peppers","Jalapeños","Avocado","Sour cream","Pico de gallo","Rice (if applicable)","Black beans"] },
+      { label: "Screen 5 — sauce", items: ["Ranch","Buffalo sauce","BBQ","Honey mustard","Chipotle mayo","Sriracha","Caesar","No sauce","Sauce on side"] },
+    ]
+  },
+  {
+    id: "sides", label: "Sides", tag: "Side",
+    tagColor: "#444441", tagBg: "#F1EFE8",
+    screens: [
+      { label: "Screen 1 — side item", items: ["French fries","Onion rings","Side salad","Coleslaw","Mac & cheese","Baked beans","Mashed potatoes","Steamed veggies","Chips","Soup of the day","Cottage cheese","Fruit cup"] },
+      { label: "Screen 2 — size", items: ["Small","Regular","Large","Side order","No sides"] },
+      { label: "Screen 3 — fry prep (if fries)", items: ["Well done","Light","Seasoned","Unseasoned","Old Bay","Cajun seasoning","No salt","Cheese fries","Loaded (bacon + cheese)","Waffle cut","Curly","Sweet potato fries"] },
+      { label: "Screen 4 — extras / toppings", items: ["Extra butter","Sour cream","Gravy","Cheese sauce","Extra dressing","Croutons","Bacon bits"] },
+      { label: "Screen 5 — dipping / sauce on side", items: ["Ketchup","Ranch","BBQ","Honey mustard","Hot sauce","No sauce"] },
+    ]
+  },
+  {
+    id: "drinks", label: "Drinks / Bar", tag: "Beverage",
+    tagColor: "#185FA5", tagBg: "#E6F1FB",
+    screens: [
+      { label: "Screen 1 — category", items: ["Soft drink / fountain","Bottled water","Coffee","Hot tea","Iced tea","Lemonade","Juice","Beer (draft)","Beer (bottle/can)","Wine","Cocktail / mixed drink","Non-alcoholic"] },
+      { label: "Screen 2 — size / glass", items: ["Small","Medium","Large","Pint","Pitcher","Bottle","Glass","No ice","Light ice","Extra ice"] },
+      { label: "Screen 3 — specifics (soda)", items: ["Coke","Diet Coke","Sprite","Dr Pepper","Orange","Root beer","Ginger ale","Club soda","Water"] },
+      { label: "Screen 4 — specifics (bar)", items: ["Draft name","Bottle name","Wine variety","Well liquor","Call liquor","Top shelf","Shot","On the rocks","Neat","Up (no ice)","With soda","With juice"] },
+      { label: "Screen 5 — add-ons", items: ["Lemon","Lime","Cherry","Orange slice","Salted rim","Sugar rim","Extra shot","Splash of cream","Half & half","Sweetener","No sweetener"] },
+    ]
+  },
+  {
+    id: "desserts", label: "Desserts", tag: "Dessert",
+    tagColor: "#993556", tagBg: "#FBEAF0",
+    screens: [
+      { label: "Screen 1 — item", items: ["Brownie","Cheesecake","Ice cream","Sundae","Pie slice","Cookie","Funnel cake","Churros","Bread pudding"] },
+      { label: "Screen 2 — size / portion", items: ["Slice","Whole","Single scoop","Double scoop","Mini","Full order"] },
+      { label: "Screen 3 — ice cream flavor", items: ["Vanilla","Chocolate","Strawberry","Cookies & cream","Butter pecan","Mint chip","Seasonal"] },
+      { label: "Screen 4 — toppings", items: ["Whipped cream","Hot fudge","Caramel","Strawberry sauce","Sprinkles","Crushed Oreo","Peanut butter drizzle","Nuts","Maraschino cherry","No topping"] },
+      { label: "Screen 5 — add-ons / notes", items: ["À la mode (add ice cream)","Warmed","Extra sauce","Nut allergy — no nuts","Candle (birthday)"] },
+    ]
+  },
+  {
+    id: "kids", label: "Kids Meals", tag: "Kids",
+    tagColor: "#3B6D11", tagBg: "#EAF3DE",
+    screens: [
+      { label: "Screen 1 — main", items: ["Grilled cheese","Hot dog","Mac & cheese","Chicken tenders","Burger slider","PB&J","Pizza slice","Quesadilla"] },
+      { label: "Screen 2 — bread / base", items: ["White bread","Wheat bread","Plain bun","No bread"] },
+      { label: "Screen 3 — cheese / topping", items: ["American","No cheese","Ketchup only","Plain (nothing)","Butter only"] },
+      { label: "Screen 4 — side", items: ["Fries","Apple slices","Fruit cup","Celery & carrots","Chips","Mac & cheese","Coleslaw"] },
+      { label: "Screen 5 — drink", items: ["Milk","Chocolate milk","Apple juice","Orange juice","Water","Lemonade","Kid-size soda"] },
+    ]
+  },
+  {
+    id: "universal", label: "Universal Modifiers", tag: "All items",
+    tagColor: "#533AB7", tagBg: "#EEEDFE",
+    screens: [
+      { label: "Allergy / dietary flags", items: ["Gluten-free","Dairy-free","Nut allergy","Shellfish allergy","Vegan","Vegetarian","No pork","Halal","Kosher"] },
+      { label: "Prep / cook instructions", items: ["Well done","Medium well","Medium","Medium rare","Rare","Extra crispy","Light cook","No salt","Low sodium","Grilled (not fried)","Baked (not fried)","Steamed"] },
+      { label: "Portioning / splitting", items: ["Split between 2","Half portion","Double portion","Extra side","No side","Box it / to-go"] },
+      { label: "Timing / service notes", items: ["Fire with appetizers","Hold — don't fire yet","Rush — ASAP","Allergy — take extra care","No garnish"] },
+      { label: "Add-ons / upsells", items: ["Add bacon +$","Add avocado +$","Add egg +$","Add extra protein +$","Add extra cheese +$","Add side of sauce +$","Upgrade side +$"] },
+    ]
+  },
+];
+
+const filtersEl = document.getElementById('filters');
+const gridEl = document.getElementById('grid');
+const countBarEl = document.getElementById('countBar');
+
+function updateCount(active) {
+  const total = categories.length;
+  const showing = active === 'all' ? total : 1;
+  countBarEl.textContent = showing === total
+    ? `Showing all ${total} categories`
+    : `Showing 1 of ${total} categories`;
+}
+
+const allBtn = document.createElement('button');
+allBtn.className = 'filter-btn active';
+allBtn.textContent = 'All';
+allBtn.dataset.id = 'all';
+filtersEl.appendChild(allBtn);
+
+categories.forEach(cat => {
+  const btn = document.createElement('button');
+  btn.className = 'filter-btn';
+  btn.textContent = cat.label;
+  btn.dataset.id = cat.id;
+  filtersEl.appendChild(btn);
+});
+
+categories.forEach(cat => {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.dataset.id = cat.id;
+
+  let html = `<div class="card-header">
+    <div class="card-title">${cat.label}</div>
+    <span class="card-tag" style="color:${cat.tagColor};background:${cat.tagBg}">${cat.tag}</span>
+  </div>`;
+
+  cat.screens.forEach((screen, i) => {
+    if (i > 0) html += '<hr class="divider">';
+    html += `<div class="screen"><div class="screen-label">${screen.label}</div><div class="pills">`;
+    screen.items.forEach(item => {
+      const isNote = item.startsWith('No ') || item.startsWith('Add ') || item.startsWith('Extra ') || item.startsWith('Light ') || item.includes('+$');
+      html += `<span class="pill${isNote ? ' note' : ''}">${item}</span>`;
+    });
+    html += '</div></div>';
+  });
+
+  card.innerHTML = html;
+  gridEl.appendChild(card);
+});
+
+updateCount('all');
+
+filtersEl.addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const id = btn.dataset.id;
+  document.querySelectorAll('.card').forEach(card => {
+    card.classList.toggle('hidden', id !== 'all' && card.dataset.id !== id);
+  });
+  updateCount(id);
+});
+</script>
+</body>
+</html>

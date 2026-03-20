@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JarTrek — Menu Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f4f0;
+  --surface:#ffffff;
+  --surface2:#fafaf7;
+  --border:rgba(0,0,0,0.1);
+  --border-mid:rgba(0,0,0,0.16);
+  --border-strong:rgba(0,0,0,0.28);
+  --text:#1a1a18;
+  --text2:#555550;
+  --text3:#999990;
+  --accent:#1a4a8a;
+  --accent-light:#e8eff8;
+  --green:#2d6a2d;
+  --green-light:#e8f4e8;
+  --amber:#7a4a00;
+  --amber-light:#fdf3e3;
+  --red:#8a2020;
+  --red-light:#faecec;
+  --purple:#4a2a8a;
+  --purple-light:#f0ecfa;
+  --teal:#1a6060;
+  --teal-light:#e8f4f4;
+  --r:10px;
+  --r-sm:6px;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:0 0 4rem}
+
+/* HEADER */
+.site-header{background:var(--surface);border-bottom:0.5px solid var(--border-mid);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;position:sticky;top:0;z-index:100}
+.logo{font-size:22px;font-weight:600;letter-spacing:-0.03em;color:var(--text)}
+.logo span{color:var(--accent)}
+.header-meta{font-size:13px;color:var(--text3);font-family:'DM Mono',monospace}
+.btn-print{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:8px 20px;border-radius:20px;border:0.5px solid var(--border-mid);background:var(--text);color:#fff;cursor:pointer;transition:opacity 0.15s}
+.btn-print:hover{opacity:0.85}
+
+/* NAV TABS */
+.nav-wrap{background:var(--surface);border-bottom:0.5px solid var(--border);padding:0 2rem;display:flex;gap:0;overflow-x:auto}
+.nav-tab{font-size:13px;font-weight:500;padding:14px 18px;border:none;background:none;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;white-space:nowrap;font-family:'DM Sans',sans-serif}
+.nav-tab:hover{color:var(--text)}
+.nav-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* MAIN */
+.main{max-width:960px;margin:0 auto;padding:2rem 1.5rem}
+.section{display:none}
+.section.active{display:block}
+
+/* CARDS */
+.card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--r);padding:1.5rem;margin-bottom:1.25rem}
+.card-title{font-size:16px;font-weight:600;letter-spacing:-0.01em;margin-bottom:4px;color:var(--text)}
+.card-sub{font-size:12px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:1.25rem}
+.card-note{font-size:12px;color:var(--text2);background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--r-sm);padding:8px 12px;margin-bottom:1.25rem;font-style:italic}
+
+/* SECTION HEADER */
+.sec-header{display:flex;align-items:center;gap:12px;margin-bottom:1.5rem}
+.sec-badge{font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;font-family:'DM Mono',monospace;letter-spacing:0.04em}
+.sec-title{font-size:20px;font-weight:600;letter-spacing:-0.02em}
+
+/* TAX RADIO */
+.tax-options{display:flex;flex-direction:column;gap:10px}
+.radio-row{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:0.5px solid var(--border);border-radius:var(--r-sm);cursor:pointer;transition:background 0.1s}
+.radio-row:hover{background:var(--surface2)}
+.radio-row.selected{background:var(--accent-light);border-color:var(--accent)}
+.radio-row input[type=radio]{margin-top:2px;accent-color:var(--accent)}
+.radio-label{font-size:14px;font-weight:500}
+.radio-desc{font-size:12px;color:var(--text3);margin-top:2px}
+
+/* CHECKBOX GRID */
+.chk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:6px;margin-bottom:1rem}
+.chk-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border:0.5px solid var(--border);border-radius:var(--r-sm);cursor:pointer;transition:background 0.1s;background:var(--surface)}
+.chk-item:hover{background:var(--surface2)}
+.chk-item.checked{background:var(--accent-light);border-color:var(--accent)}
+.chk-item input{accent-color:var(--accent)}
+.chk-label{font-size:13px;color:var(--text);flex:1}
+.chk-price{width:60px;font-size:12px;border:none;border-bottom:0.5px solid var(--border-mid);background:transparent;color:var(--text);font-family:'DM Mono',monospace;padding:1px 2px;text-align:right;outline:none}
+.chk-price:focus{border-bottom-color:var(--accent)}
+.dollar{font-size:11px;color:var(--text3)}
+
+/* FIELDS */
+.field-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.field-label{font-size:13px;color:var(--text2);min-width:120px}
+.field-input{font-family:'DM Sans',sans-serif;font-size:13px;border:0.5px solid var(--border-mid);border-radius:var(--r-sm);padding:7px 10px;background:var(--surface);color:var(--text);outline:none;transition:border-color 0.15s}
+.field-input:focus{border-color:var(--accent)}
+.field-input.sm{width:80px}
+.field-input.md{width:140px}
+.field-input.lg{width:240px;flex:1}
+.field-input.full{width:100%}
+
+/* PRICE PAIR */
+.price-pair{display:flex;align-items:center;gap:6px}
+.price-pair .field-label{min-width:auto;font-size:12px;color:var(--text3)}
+
+/* SUBSECTION */
+.subsec{border-top:0.5px solid var(--border);margin-top:1.25rem;padding-top:1.25rem}
+.subsec-title{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:10px}
+
+/* ITEM BLOCK (per-item cards like each burger) */
+.item-block{background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--r);padding:1.25rem;margin-bottom:10px}
+.item-block-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem;flex-wrap:wrap}
+.item-name-input{font-size:15px;font-weight:600;border:none;border-bottom:1.5px solid var(--border-strong);background:transparent;color:var(--text);padding:2px 4px;outline:none;font-family:'DM Sans',sans-serif;min-width:180px;flex:1}
+.item-name-input:focus{border-bottom-color:var(--accent)}
+.item-name-fixed{font-size:15px;font-weight:600;color:var(--text)}
+.basket-toggle{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);margin-left:auto;white-space:nowrap}
+.basket-toggle input{accent-color:var(--accent)}
+
+/* MINI CHK GRID (inside item blocks, tighter) */
+.mini-chk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:5px}
+.mini-chk{display:flex;align-items:center;gap:6px;padding:5px 8px;border:0.5px solid var(--border);border-radius:var(--r-sm);cursor:pointer;font-size:12px;background:var(--surface);transition:background 0.1s}
+.mini-chk:hover{background:var(--surface2)}
+.mini-chk.checked{background:var(--green-light);border-color:var(--green)}
+.mini-chk input{accent-color:var(--green)}
+
+/* SAUCE GRID (condiments) */
+.sauce-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:5px}
+.sauce-chk{display:flex;align-items:center;gap:6px;padding:5px 8px;border:0.5px solid var(--border);border-radius:var(--r-sm);cursor:pointer;font-size:12px;background:var(--surface);transition:background 0.1s}
+.sauce-chk:hover{background:var(--surface2)}
+.sauce-chk.checked{background:var(--amber-light);border-color:var(--amber)}
+.sauce-chk input{accent-color:var(--amber)}
+
+/* CUSTOM ITEMS */
+.custom-row{display:flex;gap:8px;margin-bottom:6px;align-items:center}
+.add-custom-btn{font-family:'DM Sans',sans-serif;font-size:12px;padding:6px 14px;border:0.5px dashed var(--border-mid);border-radius:var(--r-sm);background:none;color:var(--text3);cursor:pointer;transition:all 0.15s;margin-top:6px}
+.add-custom-btn:hover{border-color:var(--accent);color:var(--accent)}
+.remove-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px;padding:0 4px;line-height:1}
+.remove-btn:hover{color:var(--red)}
+
+/* TOGGLE YES/NO */
+.yn-wrap{display:flex;gap:8px;align-items:center}
+.yn-btn{font-family:'DM Sans',sans-serif;font-size:12px;padding:5px 14px;border:0.5px solid var(--border-mid);border-radius:20px;background:var(--surface);color:var(--text3);cursor:pointer;transition:all 0.15s}
+.yn-btn.yes.active{background:var(--green-light);border-color:var(--green);color:var(--green)}
+.yn-btn.no.active{background:var(--red-light);border-color:var(--red);color:var(--red)}
+
+/* SIZES ROW */
+.sizes-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
+.size-field{display:flex;align-items:center;gap:5px}
+.size-label{font-size:12px;color:var(--text3)}
+
+/* WING SAUCE SPECIAL */
+.wing-chk{display:flex;align-items:center;gap:6px;padding:5px 8px;border:0.5px solid var(--border);border-radius:var(--r-sm);cursor:pointer;font-size:12px;background:var(--surface);transition:background 0.1s}
+.wing-chk:hover{background:var(--surface2)}
+.wing-chk.checked{background:var(--red-light);border-color:var(--red)}
+.wing-chk input{accent-color:var(--red)}
+
+/* PROGRESS BAR */
+.progress-wrap{background:var(--surface);border-bottom:0.5px solid var(--border);padding:8px 2rem;display:flex;align-items:center;gap:12px}
+.progress-bar{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.3s}
+.progress-label{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;white-space:nowrap}
+
+/* PRINT */
+@media print{
+  .site-header,.nav-wrap,.progress-wrap,.btn-print,.add-custom-btn,.remove-btn{display:none!important}
+  .section{display:block!important}
+  .card{break-inside:avoid;border:1px solid #ccc}
+  body{padding:0}
+}
+</style>
+</head>
+<body>
+
+<div class="site-header">
+  <div>
+    <div class="logo">JarTrek <span>Menu Sheet</span></div>
+    <div class="header-meta">support@jartrek.net &nbsp;·&nbsp; 800-222-8117</div>
+  </div>
+  <button class="btn-print" onclick="window.print()">Print / Save PDF</button>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:12%"></div></div>
+  <div class="progress-label" id="progressLabel">Section 1 of 9</div>
+</div>
+
+<div class="nav-wrap" id="navWrap">
+  <button class="nav-tab active" data-sec="0">Tax</button>
+  <button class="nav-tab" data-sec="1">Sauces</button>
+  <button class="nav-tab" data-sec="2">Apps / Sides</button>
+  <button class="nav-tab" data-sec="3">Sandwiches</button>
+  <button class="nav-tab" data-sec="4">Chicken</button>
+  <button class="nav-tab" data-sec="5">Pizza</button>
+  <button class="nav-tab" data-sec="6">Salads</button>
+  <button class="nav-tab" data-sec="7">Dinners</button>
+  <button class="nav-tab" data-sec="8">Desserts / Specials</button>
+</div>
+
+<div class="main">
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 0 — TAX
+═══════════════════════════════════════════════════ -->
+<div class="section active" id="sec-0">
+  <div class="sec-header">
+    <span class="sec-badge" style="background:#e8eff8;color:#1a4a8a">01</span>
+    <div class="sec-title">Food Tax</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Tax Configuration</div>
+    <div class="card-sub">Mark applied tax method</div>
+    <div class="tax-options">
+      <label class="radio-row" id="tax-a">
+        <input type="radio" name="taxType" value="included" onchange="selectTax('tax-a')">
+        <div><div class="radio-label">Tax included in item price</div><div class="radio-desc">e.g., Item rings in at $5.12 with $0.38 being the tax — total comes out to $5.50</div></div>
+      </label>
+      <label class="radio-row" id="tax-b">
+        <input type="radio" name="taxType" value="added" onchange="selectTax('tax-b')">
+        <div><div class="radio-label">Tax added to item price</div><div class="radio-desc">e.g., Item rings in at $5.50 — tax then makes it $5.88</div></div>
+      </label>
+      <label class="radio-row" id="tax-c">
+        <input type="radio" name="taxType" value="none" onchange="selectTax('tax-c')">
+        <div><div class="radio-label">No tax</div><div class="radio-desc">e.g., Item just rings in at $5.50</div></div>
+      </label>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:flex-end;margin-top:1rem">
+    <button class="btn-print" onclick="goTo(1)">Next: Sauces →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 1 — SAUCES / CONDIMENTS
+═══════════════════════════════════════════════════ -->
+<div class="section" id="sec-1">
+  <div class="sec-header">
+    <span class="sec-badge" style="background:#fdf3e3;color:#7a4a00">02</span>
+    <div class="sec-title">Sauces / Condiments</div>
+  </div>
+  <div class="card-note">All sauces listed below will be available for every food category. Do <strong>not</strong> include wing sauces here — those go under Chicken.</div>
+  <div class="card">
+    <div class="card-title">Global Sauce Options</div>
+    <div class="card-sub">Mark all that apply — set price for extras if charged</div>
+    <div class="field-row" style="margin-bottom:1rem">
+      <span class="field-label">Charge for extra sauce</span>
+      <span class="dollar">$</span><input class="field-input sm" type="text" placeholder="0.00">
+    </div>
+    <div id="sauceGrid" class="chk-grid"></div>
+    <div class="subsec">
+      <div class="subsec-title">Custom sauces</div>
+      <div id="customSauces"></div>
+      <button class="add-custom-btn" onclick="addCustom('customSauces','sauce')">+ Add sauce</button>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:space-between;margin-top:1rem">
+    <button class="btn-print" style="background:var(--surface);color:var(--text);border:0.5px solid var(--border-mid)" onclick="goTo(0)">← Back</button>
+    <button class="btn-print" onclick="goTo(2)">Next: Apps / Sides →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 2 — APPS / SIDES
+═══════════════════════════════════════════════════ -->
+<div class="section" id="sec-2">
+  <div class="sec-header">
+    <span class="sec-badge" style="background:#f0ecfa;color:#4a2a8a">03</span>
+    <div class="sec-title">Apps / Sides</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Standard Apps & Sides</div>
+    <div class="card-sub">Mark items offered — set price for each</div>
+    <div id="appsGrid" class="chk-grid"></div>
+    <div class="subsec"><div class="subsec-title">Custom items</div><div id="customApps"></div><button class="add-custom-btn" onclick="addCustom('customApps','app')">+ Add item</button></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Fries</div>
+    <div class="card-sub">Mark types offered — set pricing per size</div>
+    <div id="friesRows"></div>
+    <div class="subsec"><div class="subsec-title">Custom fry types</div><div id="customFries"></div><button class="add-custom-btn" onclick="addFryRow('customFries')">+ Add fry type</button></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Loaded Items</div>
+    <div class="card-sub">Items with custom toppings and sauces</div>
+    <div id="loadedItems"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Appetizer Platter</div>
+    <div class="card-sub">Configure platter options</div>
+    <div class="field-row"><span class="field-label">Platter price</span><span class="dollar">$</span><input class="field-input sm" type="text" placeholder="0.00"></div>
+    <div class="field-row"><span class="field-label">Items allowed in platter</span><input class="field-input sm" type="text" placeholder="#"></div>
+    <div class="field-row"><span class="field-label">Sauces included before charge</span><input class="field-input sm" type="text" placeholder="#"></div>
+    <div class="subsec">
+      <div class="subsec-title">Items available for platter</div>
+      <div id="platterGrid" class="mini-chk-grid"></div>
+    </div>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;margin-top:1rem">
+    <button class="btn-print" style="background:var(--surface);color:var(--text);border:0.5px solid var(--border-mid)" onclick="goTo(1)">← Back</button>
+    <button class="btn-print" onclick="goTo(3)">Next: Sandwiches →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 3 — SANDWICHES
+═══════════════════════════════════════════════════ -->
+<div class="section" id="sec-3">
+  <div class="sec-header">
+    <span class="sec-badge" style="background:#e8f4e8;color:#2d6a2d">04</span>
+    <div class="sec-title">Sandwiches</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">All Sandwich Options</div>
+    <div class="card-sub">These settings apply to every item under Sandwiches</div>
+    <div class="subsec">
+      <div class="subsec-title">Bread choices</div>
+      <div id="breadGrid" class="mini-chk-grid"></div>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">Cheese choices</div>
+      <div class="field-row"><span class="field-label">Extra cheese charge</span><span class="dollar">$</span><input class="field-input sm" type="text" placeholder="0.00"></div>
+      <div id="sandCheeseGrid" class="mini-chk-grid"></div>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">Topping choices</div>
+      <div class="field-row"><span class="field-label">Extra toppings charge</span><span class="dollar">$</span><input class="field-input sm" type="text" placeholder="0.00"></div>
+      <div id="sandToppingsGrid" class="chk-grid"></div>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">Basket side options</div>
+      <div id="basketGrid" class="chk-grid"></div>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">Meat temps (burgers)</div>
+      <div class="yn-wrap"><span style="font-size:13px;color:var(--text2)">Allow meat temps?</span>
+        <button class="yn-btn yes" onclick="toggleYN(this,'meatTemps','yes')">Yes</button>
+        <button class="yn-btn no" onclick="toggleYN(this,'meatTemps','no')">No</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Individual Sandwich / Burger Items</div>
+    <div class="card-sub">Configure each specific item — cheeses, toppings, and sauces included on that item</div>
+    <div id="sandItemBlocks"></div>
+    <button class="add-custom-btn" onclick="addSandItem()">+ Add burger / sandwich / sub</button>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;margin-top:1rem">
+    <button class="btn-print" style="background:var(--surface);color:var(--text);border:0.5px solid var(--border-mid)" onclick="goTo(2)">← Back</button>
+    <button class="btn-print" onclick="goTo(4)">Next: Chicken →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 4 — CHICKEN
+═══════════════════════════════════════════════════ -->
+<div class="section" id="sec-4">
+  <div class="sec-header">
+    <span class="sec-badge" style="background:#faecec;color:#8a2020">05</span>
+    <div class="sec-title">Chicken</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Wings / Tenders Quantities & Pricing</div>
+    <div class="card-sub">Mark sizes offered — set price for each</div>
+    <div id="wingQtyGrid" class="chk-grid"></div>
+    <div class="field-row" style="margin-top:0.75rem">
+      <div class="yn-wrap"><span style="font-size:13px;color:var(--text2)">Grilled option for tenders/boneless?</span>
+        <button class="yn-btn yes" onclick="toggleYN(this,'grilledOpt','yes')">Yes</button>
+        <button class="yn-btn no" onclick="toggleYN(this,'grilledOpt','no')">No</button>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="yn-wrap"><span style="font-size:13px;color:var(--text2)">Basket option?</span>
+        <button class="yn-btn yes" onclick="toggleYN(this,'wingBasket','yes')">Yes</button>
+        <button class="yn-btn no" onclick="toggleYN(this,'wingBasket','no')">No</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Wing Sauces / Rubs</div>
+    <div class="card-sub">All marked sauces apply to all chicken items</div>
+    <div id="wingSauceGrid" class="chk-grid" style="--chk-accent:var(--red)"></div>
+    <div class="subsec">
+      <div class="subsec-title">Sauce options</div>
+      <div class="field-row">
+        <div class="yn-wrap"><span style="font-size:13px;color:var(--text2)">Sauce on the side?</span>
+          <button class="yn-btn yes" onclick="toggleYN(this,'sauceSide','yes')">Yes</button>
+          <button class="yn-btn no" onclick="toggleYN(this,'sauceSide','no')">No</button>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="yn-wrap"><span style="font-size:13px;color:var(--text2)">Split sauce?</span>
+          <button class="yn-btn yes" onclick="toggleYN(this,'splitSauce','yes')">Yes</button>
+          <button class="yn-btn no" onclick="toggleYN(this,'splitSauce','no')">No</button>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="yn-wrap"><span style="font-size:13px;color:var(--text2)">Combined sauces?</span>
+          <button class="yn-btn yes" onclick="toggleYN(this,'combSauce','yes')">Yes</button>
+          <button class="yn-btn no" onclick="toggleYN(this,'combSauce','no')">No</button>
+        </div>
+      </div>
+      <div class="field-row"><span class="field-label">Extra sauce charge</span><span class="dollar">$</span><input class="field-input sm" type="text" placeholder="0.00"></div>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">Included sides (no charge)</div>
+      <div id="wingIncSides" class="mini-chk-grid"></div>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">Charged extras</div>
+      <div id="wingChgSides" class="chk-grid"></div>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">Wing options</div>
+      <div id="wingOptions" class="mini-chk-grid"></div>
+    </div>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;margin-top:1rem">
+    <button class="btn-print" style="background:var(--surface);color:var(--text);border:0.5px solid var(--border-mid)" onclick="goTo(3)">← Back</button>
+    <button class="btn-print" onclick="goTo(5)">Next: Pizza →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 5 — PIZZA
+═══════════════════════════════════════════════════ -->
+<div class="section" id="sec-5">
+  <div class="sec-header">
+    <span class="sec-badge" style="background:#faece7;color:#993c1d">06</span>
+    <div class="sec-title">Pizza</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Pizza Options (All Pizzas)</div>
+    <div class="card-sub">These settings apply to all pizza items</div>
+    <div class="subsec">
+      <div class="subsec-title">Toppings</div>
+      <div class="field-row">
+        <span class="field-label">Small topping price</span><span class="dollar">$</span><input class="field-input sm" type="text" placeholder="0.00">
+        <span class="field-label" style="margin-left:1rem">Large topping price</span><span class="dollar">$</span><input class="field-input sm" type="text" placeholder="0.00">
+      </div>
+      <div id="pizzaToppingsGrid" class="chk-grid"></div>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">Options</div>
+      <div id="pizzaOptionsGrid" class="mini-chk-grid"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Individual Pizza Items</div>
+    <div class="card-sub">Configure each pizza — small & large prices, included toppings</div>
+    <div id="pizzaItemBlocks"></div>
+    <button class="add-custom-btn" onclick="addPizzaItem()">+ Add pizza</button>
+  </div>
+  <div style="display:flex;justify-content:space-between;margin-top:1rem">
+    <button class="btn-print" style="background:var(--surface);color:var(--text);border:0.5px solid var(--border-mid)" onclick="goTo(4)">← Back</button>
+    <button class="btn-print" onclick="goTo(6)">Next: Salads →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 6 — SALADS
+═══════════════════════════════════════════════════ -->
+<div class="section" id="sec-6">
+  <div class="sec-header">
+    <span class="sec-badge" style="background:#e8f4f4;color:#1a6060">07</span>
+    <div class="sec-title">Salads</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Salad Options (All Salads)</div>
+    <div class="subsec">
+      <div class="subsec-title">Dressings</div>
+      <div class="field-row"><span class="field-label">Extra dressing charge</span><span class="dollar">$</span><input class="field-input sm" type="text" placeholder="0.00"></div>
+      <div id="saladDressGrid" class="mini-chk-grid"></div>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">Toppings (charged)</div>
+      <div class="field-row"><span class="field-label">Extra toppings charge</span><span class="dollar">$</span><input class="field-input sm" type="text" placeholder="0.00"></div>
+      <div id="saladToppGrid" class="chk-grid"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Individual Salad Items</div>
+    <div id="saladItemBlocks"></div>
+    <button class="add-custom-btn" onclick="addSaladItem()">+ Add salad</button>
+  </div>
+  <div style="display:flex;justify-content:space-between;margin-top:1rem">
+    <button class="btn-print" style="background:var(--surface);color:var(--text);border:0.5px solid var(--border-mid)" onclick="goTo(5)">← Back</button>
+    <button class="btn-print" onclick="goTo(7)">Next: Dinners →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 7 — DINNERS
+═══════════════════════════════════════════════════ -->
+<div class="section" id="sec-7">
+  <div class="sec-header">
+    <span class="sec-badge" style="background:#f1efe8;color:#444441">08</span>
+    <div class="sec-title">Dinners</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Dinner Side Options (All Dinners)</div>
+    <div class="field-row"><span class="field-label">Sides included per dinner</span><input class="field-input sm" type="text" placeholder="#"></div>
+    <div class="subsec">
+      <div class="subsec-title">Included sides (no charge)</div>
+      <div id="dinnerIncSides" class="mini-chk-grid"></div>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">Charged / extra sides</div>
+      <div id="dinnerChgSides" class="chk-grid"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Dinner Items</div>
+    <div id="dinnerItemBlocks"></div>
+    <button class="add-custom-btn" onclick="addDinnerItem()">+ Add dinner item</button>
+  </div>
+  <div style="display:flex;justify-content:space-between;margin-top:1rem">
+    <button class="btn-print" style="background:var(--surface);color:var(--text);border:0.5px solid var(--border-mid)" onclick="goTo(6)">← Back</button>
+    <button class="btn-print" onclick="goTo(8)">Next: Desserts →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 8 — DESSERTS + SPECIALS
+═══════════════════════════════════════════════════ -->
+<div class="section" id="sec-8">
+  <div class="sec-header">
+    <span class="sec-badge" style="background:#fbeaf0;color:#993556">09</span>
+    <div class="sec-title">Desserts & Specials</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Desserts</div>
+    <div class="card-sub">List all desserts and their prices</div>
+    <div id="dessertRows"></div>
+    <button class="add-custom-btn" onclick="addDessertRow()">+ Add dessert</button>
+  </div>
+  <div class="card">
+    <div class="card-title">Daily Specials</div>
+    <div class="field-row">
+      <div class="yn-wrap"><span style="font-size:13px;color:var(--text2)">Run daily specials?</span>
+        <button class="yn-btn yes" onclick="toggleYN(this,'dailySpec','yes')">Yes</button>
+        <button class="yn-btn no" onclick="toggleYN(this,'dailySpec','no')">No</button>
+      </div>
+    </div>
+    <div class="field-row"><span class="field-label">How many?</span><input class="field-input sm" type="text" placeholder="#"></div>
+    <div class="field-row"><span class="field-label" style="min-width:0">Additional notes</span></div>
+    <textarea class="field-input full" rows="3" placeholder="Write additional information here..."></textarea>
+  </div>
+  <div class="card">
+    <div class="card-title">Weekly Specials</div>
+    <div class="field-row">
+      <div class="yn-wrap"><span style="font-size:13px;color:var(--text2)">Run weekly specials?</span>
+        <button class="yn-btn yes" onclick="toggleYN(this,'weeklySpec','yes')">Yes</button>
+        <button class="yn-btn no" onclick="toggleYN(this,'weeklySpec','no')">No</button>
+      </div>
+    </div>
+    <div class="field-row"><span class="field-label">How many?</span><input class="field-input sm" type="text" placeholder="#"></div>
+    <div class="field-row"><span class="field-label" style="min-width:0">Additional notes</span></div>
+    <textarea class="field-input full" rows="3" placeholder="Write additional information here..."></textarea>
+  </div>
+  <div style="display:flex;justify-content:space-between;margin-top:1rem">
+    <button class="btn-print" style="background:var(--surface);color:var(--text);border:0.5px solid var(--border-mid)" onclick="goTo(7)">← Back</button>
+    <button class="btn-print" onclick="window.print()">Print / Save PDF</button>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const SAUCES = ['Mayo','Ketchup','Mustard','Chipotle','Hot Sauce','BBQ','Honey Must','Marinara','Oil','Vin','Cocktail','Tartar','Chz Sauce','Ranch','Bleu Chz','Horseradish'];
+const APPS = ['Onion Rings','Onion Petals','Jalapeño Poppers','Mozz Stix','Breaded Mushroom','Breaded Cauliflower','Breaded Zucchini','Chz Balls','Fried Pickles','Soft Pretzel','Chz Curds','Mac Chz Bites','Broc Cheddar Bites','Hush Puppies','Mac N Chz'];
+const FRIES_TYPES = ['Fresh Cut Fry','Beer Battered Fry','Sweet Potato Fry','Waffle Fry'];
+const BREAD = ['Bun','White','Wheat','Whole Grain','Rye','Sour Dough','Ciabatta','Wrap'];
+const CHEESE = ['American','Provolone','Cheddar','Swiss','Pepper Jack','Mont. Jack','Nacho'];
+const TOPPINGS = ['Lettuce','Tomato','Onion','Fried Onion','Mushroom','Jalapeño','Ban Pepp','Sweet Pepp','Fried Egg','Coleslaw','Avocado','Bacon','Ham','Turkey','Chicken','Pork'];
+const COND = ['Mayo','Ketchup','Mustard','Chipotle','Hot Sauce','BBQ','Honey Must','Marinara','Oil','Vin','Cocktail','Tartar','Chz Sauce','Ranch','Bleu Chz','Horseradish'];
+const BASKET_TYPES = ['Fresh Cut','Beer Battered','Sweet Pot Fries','Onion Rings'];
+const WING_QTY = ['6 Wings','12 Wings','6 Boneless','12 Boneless','3 Tenders','6 Tenders'];
+const WING_SAUCES = ['Mild','Hot','BBQ','Honey BBQ','Honey Must','Teriyaki','Sweet Chili','Mango Hab','Garlic Parm','Garlic Hot','Cajun','Old Bay','Plain'];
+const WING_INC_SIDES = ['Celery','Carrots','Ranch','Bleu Chz'];
+const WING_CHG_SIDES = ['Celery','Carrots','Ranch','Bleu Chz'];
+const WING_OPTIONS = ['All Flats','All Drums','Extra Crispy'];
+const PIZZA_TOPPINGS = ['Pepperoni','Sausage','Chicken','Bacon','Beef','Ham','Salami','Olives','Mushroom','Onion','Tomato','Broccoli','Sweet Pepp','Green Pepp','Ban Pepp','Jalapeños','Pineapple'];
+const PIZZA_OPTIONS = ['Left/Right Half','Thin Crust','Brooklyn Style','Well Done','Light Sauce','Heavy Sauce','Light Cheese','Heavy Cheese'];
+const SALAD_DRESS = ['Ranch','Bleu Cheese','Italian','French','1,000 Island','Balsamic Vin','Oil and Vin','Greek','Honey Must','Caesar','House Dressing'];
+const SALAD_TOPP = ['Ham','Turkey','Steak','Bacon','Grilled Chix','Fried Chix','Shrimp','Eggs','Raw Onion','Sweet Pepp','Ban Pepps','Jalapeños','Mushroom','Fried Mush','Fried Onion','Avocado','Nuts','Feta','Shred Chz','Blu Chz Crumbl'];
+const DINNER_INC = ['Mac N Chz','Coleslaw','Apple Sauce','House Salad','Cup Soup','Bowl Soup','Fresh Cut Fry','Beer Batt Fry','Swt Pot Fry','Waffle Fry','Onion Rings','Onion Petals','Baked Pot','Mashed Pot','Baked Swt Pot','Corn','Vegetables'];
+const DINNER_CHG = ['Mac N Chz','Coleslaw','Apple Sauce','House Salad','Cup Soup','Bowl Soup','Baked Pot','Mashed Pot','Baked Swt Pot','Corn','Vegetables'];
+const DINNER_FIXED = ['Lasagna','Spaghetti','Fish','Steak'];
+
+// ─── NAV ────────────────────────────────────────────────────────────────────
+function goTo(idx) {
+  document.querySelectorAll('.section').forEach((s,i)=>s.classList.toggle('active',i===idx));
+  document.querySelectorAll('.nav-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  const pct = Math.round(((idx+1)/9)*100);
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressLabel').textContent = `Section ${idx+1} of 9`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.getElementById('navWrap').addEventListener('click',e=>{
+  const t=e.target.closest('.nav-tab'); if(!t) return;
+  goTo(parseInt(t.dataset.sec));
+});
+
+// ─── TAX ────────────────────────────────────────────────────────────────────
+function selectTax(id){
+  document.querySelectorAll('.radio-row').forEach(r=>r.classList.remove('selected'));
+  document.getElementById(id).classList.add('selected');
+}
+
+// ─── BUILD CHECKBOX GRID ─────────────────────────────────────────────────────
+function buildChkGrid(containerId, items, colorClass, showPrice=false) {
+  const el = document.getElementById(containerId);
+  if(!el) return;
+  el.innerHTML = '';
+  items.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'chk-item';
+    div.innerHTML = `<input type="checkbox" onchange="this.closest('.chk-item').classList.toggle('checked',this.checked)">
+      <span class="chk-label">${item}</span>
+      ${showPrice ? '<span class="dollar">$</span><input class="chk-price" type="text" placeholder="0.00" onclick="event.stopPropagation()">' : ''}`;
+    div.querySelector('input[type=checkbox]').addEventListener('change', function(){
+      div.classList.toggle('checked', this.checked);
+    });
+    el.appendChild(div);
+  });
+}
+
+function buildMiniGrid(containerId, items, colorStyle) {
+  const el = document.getElementById(containerId);
+  if(!el) return;
+  el.innerHTML = '';
+  items.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'mini-chk';
+    div.innerHTML = `<input type="checkbox" onchange="this.closest('.mini-chk').classList.toggle('checked',this.checked)"><span>${item}</span>`;
+    el.appendChild(div);
+  });
+}
+
+// ─── CUSTOM ROWS ─────────────────────────────────────────────────────────────
+function addCustom(containerId, type) {
+  const el = document.getElementById(containerId);
+  const row = document.createElement('div');
+  row.className = 'custom-row';
+  row.innerHTML = `<input class="field-input lg" type="text" placeholder="Item name">
+    <span class="dollar">$</span><input class="field-input sm" type="text" placeholder="0.00">
+    <button class="remove-btn" onclick="this.closest('.custom-row').remove()">×</button>`;
+  el.appendChild(row);
+}
+
+function addFryRow(containerId) {
+  const el = document.getElementById(containerId);
+  const row = document.createElement('div');
+  row.className = 'custom-row';
+  row.style.flexWrap='wrap';
+  row.innerHTML = `<input class="field-input md" type="text" placeholder="Fry type name">
+    <div class="sizes-row" style="margin:0;gap:8px">
+      <span class="size-label">One Size $</span><input class="field-input sm" type="text" placeholder="0.00">
+      <span class="size-label">Small $</span><input class="field-input sm" type="text" placeholder="0.00">
+      <span class="size-label">Large $</span><input class="field-input sm" type="text" placeholder="0.00">
+    </div>
+    <input class="field-input md" type="text" placeholder="Included sauce(s)">
+    <button class="remove-btn" onclick="this.closest('.custom-row').remove()">×</button>`;
+  el.appendChild(row);
+}
+
+// ─── FRIES GRID ──────────────────────────────────────────────────────────────
+function buildFriesRows() {
+  const el = document.getElementById('friesRows');
+  FRIES_TYPES.forEach(name => {
+    const div = document.createElement('div');
+    div.style.cssText='display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:0.5px solid var(--border);flex-wrap:wrap';
+    div.innerHTML=`<input type="checkbox" style="accent-color:var(--accent)" onchange="this.parentElement.style.opacity=this.checked?1:0.5">
+      <span style="font-size:13px;min-width:140px;font-weight:500">${name}</span>
+      <span class="size-label">One Size $</span><input class="field-input sm" type="text" placeholder="0.00">
+      <span class="size-label">Small $</span><input class="field-input sm" type="text" placeholder="0.00">
+      <span class="size-label">Large $</span><input class="field-input sm" type="text" placeholder="0.00">
+      <input class="field-input md" type="text" placeholder="Included sauce(s)">`;
+    div.querySelector('input[type=checkbox]').dispatchEvent(new Event('change'));
+    el.appendChild(div);
+  });
+}
+
+// ─── LOADED ITEMS ─────────────────────────────────────────────────────────────
+function buildLoadedItems() {
+  const el = document.getElementById('loadedItems');
+  ['Loaded Fries','Nachos'].forEach(name => {
+    const div = document.createElement('div');
+    div.className='item-block';
+    div.innerHTML=`<div class="item-block-header"><span class="item-name-fixed">${name}</span>
+      <span class="dollar" style="margin-left:8px">$</span><input class="field-input sm" type="text" placeholder="0.00"></div>
+      <div class="field-row"><span class="field-label">Toppings included</span><input class="field-input lg" type="text" placeholder="List toppings..."></div>
+      <div class="field-row"><span class="field-label">Sauces included</span><input class="field-input lg" type="text" placeholder="List sauces..."></div>`;
+    el.appendChild(div);
+  });
+  // 2 custom
+  for(let i=0;i<2;i++){
+    const div=document.createElement('div');
+    div.className='item-block';
+    div.innerHTML=`<div class="item-block-header"><input class="item-name-input" type="text" placeholder="Item name...">
+      <span class="dollar">$</span><input class="field-input sm" type="text" placeholder="0.00"></div>
+      <div class="field-row"><span class="field-label">Toppings included</span><input class="field-input lg" type="text" placeholder="List toppings..."></div>
+      <div class="field-row"><span class="field-label">Sauces included</span><input class="field-input lg" type="text" placeholder="List sauces..."></div>`;
+    el.appendChild(div);
+  }
+}
+
+// ─── SANDWICH ITEMS ───────────────────────────────────────────────────────────
+let sandCount=0;
+function addSandItem(nameFixed, type) {
+  sandCount++;
+  const el=document.getElementById('sandItemBlocks');
+  const div=document.createElement('div');
+  div.className='item-block';
+  const isHoagie = type==='hoagie';
+  const isFish = type==='fish';
+  const isChicken = type==='chicken';
+  let header = nameFixed
+    ? `<span class="item-name-fixed">${nameFixed}</span>`
+    : `<input class="item-name-input" type="text" placeholder="${isHoagie?'Sub / Hoagie name...':'Burger / Sandwich name...'}">`;
+  let prices = isHoagie||isFish||isChicken
+    ? `<span class="size-label" style="margin-left:8px">${isFish?'Baked $':isChicken?'Grilled $':'Half $'}</span><input class="field-input sm" type="text" placeholder="0.00">
+       <span class="size-label">${isFish?'Fried $':isChicken?'Fried $':'Full $'}</span><input class="field-input sm" type="text" placeholder="0.00">`
+    : `<span class="dollar" style="margin-left:8px">$</span><input class="field-input sm" type="text" placeholder="0.00">`;
+  div.innerHTML=`<div class="item-block-header">${header}${prices}
+    <label class="basket-toggle"><input type="checkbox" style="accent-color:var(--accent)"> Basket option?</label>
+    <button class="remove-btn" onclick="this.closest('.item-block').remove()">×</button></div>
+    <div class="subsec" style="margin-top:0"><div class="subsec-title">Cheeses included</div><div class="mini-chk-grid">${CHEESE.map(c=>`<label class="mini-chk"><input type="checkbox" onchange="this.closest('.mini-chk').classList.toggle('checked',this.checked)"><span>${c}</span></label>`).join('')}</div></div>
+    <div class="subsec"><div class="subsec-title">Toppings included</div><div class="mini-chk-grid">${TOPPINGS.map(t=>`<label class="mini-chk"><input type="checkbox" onchange="this.closest('.mini-chk').classList.toggle('checked',this.checked)"><span>${t}</span></label>`).join('')}</div></div>
+    <div class="subsec"><div class="subsec-title">Condiments / sauces included</div><div class="sauce-grid">${COND.map(c=>`<label class="sauce-chk"><input type="checkbox" onchange="this.closest('.sauce-chk').classList.toggle('checked',this.checked)"><span>${c}</span></label>`).join('')}</div></div>`;
+  el.appendChild(div);
+}
+
+function initSandItems(){
+  addSandItem('Build Your Own Burger');
+  addSandItem('Rodeo Burger');
+  addSandItem('Mush Swiss Burger');
+  for(let i=0;i<3;i++) addSandItem(null,null);
+  addSandItem(null,'hoagie');addSandItem(null,'hoagie');addSandItem(null,'hoagie');
+  addSandItem('Fish Sandwich','fish');
+  addSandItem('Chicken Sandwich','chicken');
+  for(let i=0;i<3;i++) addSandItem(null,null);
+}
+
+// ─── PIZZA ITEMS ──────────────────────────────────────────────────────────────
+function addPizzaItem(nameFixed){
+  const el=document.getElementById('pizzaItemBlocks');
+  const div=document.createElement('div');
+  div.className='item-block';
+  div.innerHTML=`<div class="item-block-header">
+    ${nameFixed?`<span class="item-name-fixed">${nameFixed}</span>`:`<input class="item-name-input" type="text" placeholder="Pizza name...">`}
+    <span class="size-label" style="margin-left:8px">Small $</span><input class="field-input sm" type="text" placeholder="0.00">
+    <span class="size-label">Large $</span><input class="field-input sm" type="text" placeholder="0.00">
+    <button class="remove-btn" onclick="this.closest('.item-block').remove()">×</button></div>
+    <div class="subsec" style="margin-top:0"><div class="subsec-title">Toppings included</div>
+    <div class="mini-chk-grid">${PIZZA_TOPPINGS.map(t=>`<label class="mini-chk"><input type="checkbox" onchange="this.closest('.mini-chk').classList.toggle('checked',this.checked)"><span>${t}</span></label>`).join('')}</div></div>`;
+  el.appendChild(div);
+}
+
+// ─── SALAD ITEMS ─────────────────────────────────────────────────────────────
+function addSaladItem(nameFixed){
+  const el=document.getElementById('saladItemBlocks');
+  const div=document.createElement('div');
+  div.className='item-block';
+  div.innerHTML=`<div class="item-block-header">
+    ${nameFixed?`<span class="item-name-fixed">${nameFixed}</span>`:`<input class="item-name-input" type="text" placeholder="Salad name...">`}
+    <span class="dollar" style="margin-left:8px">$</span><input class="field-input sm" type="text" placeholder="0.00">
+    <button class="remove-btn" onclick="this.closest('.item-block').remove()">×</button></div>
+    <div class="subsec" style="margin-top:0"><div class="subsec-title">Toppings included</div>
+    <div class="mini-chk-grid">${SALAD_TOPP.map(t=>`<label class="mini-chk"><input type="checkbox" onchange="this.closest('.mini-chk').classList.toggle('checked',this.checked)"><span>${t}</span></label>`).join('')}</div></div>
+    <div class="subsec"><div class="subsec-title">Dressings included</div>
+    <div class="mini-chk-grid">${SALAD_DRESS.map(d=>`<label class="mini-chk"><input type="checkbox" onchange="this.closest('.mini-chk').classList.toggle('checked',this.checked)"><span>${d}</span></label>`).join('')}</div></div>`;
+  el.appendChild(div);
+}
+
+// ─── DINNER ITEMS ─────────────────────────────────────────────────────────────
+function addDinnerItem(nameFixed, hasTemp, hasCookStyle){
+  const el=document.getElementById('dinnerItemBlocks');
+  const div=document.createElement('div');
+  div.className='item-block';
+  let header = nameFixed
+    ? `<span class="item-name-fixed">${nameFixed}</span>`
+    : `<input class="item-name-input" type="text" placeholder="Dinner item name...">`;
+  let cookStyle = hasCookStyle
+    ? `<div class="field-row"><span class="field-label">Cook styles</span><label style="font-size:13px;display:flex;align-items:center;gap:6px"><input type="checkbox" style="accent-color:var(--accent)"> Baked</label><label style="font-size:13px;display:flex;align-items:center;gap:6px;margin-left:8px"><input type="checkbox" style="accent-color:var(--accent)"> Fried</label></div>` : '';
+  let meatTemp = hasTemp
+    ? `<div class="field-row"><div class="yn-wrap"><span style="font-size:13px;color:var(--text2)">Allow meat temps?</span><button class="yn-btn yes" onclick="toggleYN(this,'','yes')">Yes</button><button class="yn-btn no" onclick="toggleYN(this,'','no')">No</button></div></div>` : '';
+  div.innerHTML=`<div class="item-block-header">${header}
+    <span class="dollar" style="margin-left:8px">$</span><input class="field-input sm" type="text" placeholder="0.00">
+    <button class="remove-btn" onclick="this.closest('.item-block').remove()">×</button></div>
+    ${cookStyle}${meatTemp}
+    <div class="field-row"><span class="field-label"># sides included</span><input class="field-input sm" type="text" placeholder="#"></div>
+    <div class="field-row"><span class="field-label">Included sauces</span><input class="field-input lg" type="text" placeholder="List sauces..."></div>
+    <div class="field-row"><span class="field-label">Additional notes</span><input class="field-input lg" type="text" placeholder="Notes..."></div>`;
+  el.appendChild(div);
+}
+
+// ─── DESSERTS ─────────────────────────────────────────────────────────────────
+function addDessertRow(){
+  const el=document.getElementById('dessertRows');
+  const row=document.createElement('div');
+  row.className='custom-row';
+  row.innerHTML=`<input class="field-input lg" type="text" placeholder="Dessert name">
+    <span class="dollar">$</span><input class="field-input sm" type="text" placeholder="0.00">
+    <button class="remove-btn" onclick="this.closest('.custom-row').remove()">×</button>`;
+  el.appendChild(row);
+}
+
+function initDesserts(){for(let i=0;i<6;i++) addDessertRow();}
+
+// ─── YN TOGGLE ───────────────────────────────────────────────────────────────
+function toggleYN(btn, key, val){
+  const wrap=btn.closest('.yn-wrap');
+  wrap.querySelectorAll('.yn-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ─── WING QTY ────────────────────────────────────────────────────────────────
+function buildWingQty(){
+  const el=document.getElementById('wingQtyGrid');
+  WING_QTY.forEach(q=>{
+    const div=document.createElement('div');
+    div.className='chk-item';
+    div.innerHTML=`<input type="checkbox" onchange="this.closest('.chk-item').classList.toggle('checked',this.checked)">
+      <span class="chk-label">${q}</span>
+      <span class="dollar">$</span><input class="chk-price" type="text" placeholder="0.00" onclick="event.stopPropagation()">`;
+    el.appendChild(div);
+  });
+  // custom qty rows
+  const wrap=document.createElement('div');
+  wrap.style.cssText='margin-top:8px';
+  const customEl=document.createElement('div');
+  customEl.id='customWingQty';
+  wrap.appendChild(customEl);
+  const btn=document.createElement('button');
+  btn.className='add-custom-btn';
+  btn.textContent='+ Add quantity';
+  btn.onclick=()=>{ const r=document.createElement('div');r.className='custom-row';r.innerHTML=`<input class="field-input md" type="text" placeholder="e.g. 24 Wings"><span class="dollar">$</span><input class="field-input sm" type="text" placeholder="0.00"><button class="remove-btn" onclick="this.closest('.custom-row').remove()">×</button>`;customEl.appendChild(r); };
+  wrap.appendChild(btn);
+  el.after(wrap);
+}
+
+// ─── SAUCE GRID with wing styling ────────────────────────────────────────────
+function buildWingSauceGrid(){
+  const el=document.getElementById('wingSauceGrid');
+  WING_SAUCES.forEach(s=>{
+    const div=document.createElement('div');
+    div.className='chk-item';
+    div.style.cssText='--chk-hover:var(--red-light);';
+    div.innerHTML=`<input type="checkbox" style="accent-color:var(--red)" onchange="this.closest('.chk-item').classList.toggle('checked',this.checked);this.closest('.chk-item').style.background=this.checked?'var(--red-light)':'';this.closest('.chk-item').style.borderColor=this.checked?'var(--red)':'';">
+      <span class="chk-label">${s}</span>`;
+    el.appendChild(div);
+  });
+}
+
+// ─── PLATTER SYNC ────────────────────────────────────────────────────────────
+function buildPlatterGrid(){
+  const allItems=[...APPS,...FRIES_TYPES];
+  buildMiniGrid('platterGrid', allItems);
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+buildChkGrid('sauceGrid', SAUCES, 'amber', true);
+buildChkGrid('appsGrid', APPS, 'purple', true);
+buildFriesRows();
+buildLoadedItems();
+buildPlatterGrid();
+buildMiniGrid('breadGrid', BREAD);
+buildMiniGrid('sandCheeseGrid', CHEESE);
+buildChkGrid('sandToppingsGrid', TOPPINGS, 'green', true);
+buildChkGrid('basketGrid', BASKET_TYPES, 'green', true);
+initSandItems();
+buildWingQty();
+buildWingSauceGrid();
+buildMiniGrid('wingIncSides', WING_INC_SIDES);
+buildChkGrid('wingChgSides', WING_CHG_SIDES, 'red', true);
+buildMiniGrid('wingOptions', WING_OPTIONS);
+buildChkGrid('pizzaToppingsGrid', PIZZA_TOPPINGS, 'coral', false);
+buildMiniGrid('pizzaOptionsGrid', PIZZA_OPTIONS);
+for(let i=0;i<6;i++) addPizzaItem();
+buildMiniGrid('saladDressGrid', SALAD_DRESS);
+buildChkGrid('saladToppGrid', SALAD_TOPP, 'teal', true);
+for(let i=0;i<6;i++) addSaladItem();
+buildMiniGrid('dinnerIncSides', DINNER_INC);
+buildChkGrid('dinnerChgSides', DINNER_CHG, 'gray', true);
+addDinnerItem('Lasagna');
+addDinnerItem('Spaghetti');
+addDinnerItem('Fish', false, true);
+addDinnerItem('Steak', true, false);
+for(let i=0;i<4;i++) addDinnerItem();
+initDesserts();
+</script>
+</body>
+</html>
